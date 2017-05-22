@@ -1,5 +1,6 @@
 package JEAN;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -17,6 +18,21 @@ public class Customer {
     private String lastName;
     private String city;
     private Date date;
+
+    public Customer(String text) throws ParseException {
+
+        String[] split=   text.split(CSV_SEPARATOR); // dzielenie po przecinku
+        this.id =Integer.parseInt(split[0]);
+        this.pesel =split[1];
+        this.firstName = split [2];
+        this.lastName = split [3];
+        this.city = split[4];
+
+        String dateString = split[5];
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_PATTERN); // wzor adty mamy w stalej date_pattern
+        this.date = simpleDateFormat.parse(dateString);
+    }
 
     public Customer(String pesel, String firstName, String lastName, String city, Date date) {
         id = nextId;
