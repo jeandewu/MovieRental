@@ -6,6 +6,7 @@ import java.util.Date;
  * Created by RENT on 2017-05-19.
  */
 public class Customer {
+    public static final String CSV_SEPARATOR = ",";
     private static int nextId=0;
     private String pesel;
     private String firstName;
@@ -22,6 +23,21 @@ public class Customer {
         this.firstName = firstName;
         this.lastName = lastName;
         this.city = city;
+    }
+
+    public String toCSVString(){
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(id);
+        stringBuilder.append(CSV_SEPARATOR);
+        stringBuilder.append(firstName);
+        stringBuilder.append(CSV_SEPARATOR);
+        stringBuilder.append(lastName);
+        stringBuilder.append(CSV_SEPARATOR);
+        stringBuilder.append(city);
+        stringBuilder.append(CSV_SEPARATOR);
+        stringBuilder.append(date);
+
+        return stringBuilder.toString();
     }
 
     public String getPesel() {
