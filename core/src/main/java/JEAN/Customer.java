@@ -1,5 +1,6 @@
 package JEAN;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -7,27 +8,32 @@ import java.util.Date;
  */
 public class Customer {
     public static final String CSV_SEPARATOR = ",";
-    private static int nextId=0;
+    public static final String DATE_PATTERN = "yyyy-MM-dd";
+    private static int nextId = 0;
+
+    private int id;
     private String pesel;
     private String firstName;
-   private  String lastName;
-  private   int id;
+    private String lastName;
     private String city;
     private Date date;
 
     public Customer(String pesel, String firstName, String lastName, String city, Date date) {
-        id=nextId;
+        id = nextId;
         nextId++;
-        this.date=date;
+
+        this.date = date;
         this.pesel = pesel;
         this.firstName = firstName;
         this.lastName = lastName;
         this.city = city;
     }
 
-    public String toCSVString(){
+    public String toCSVString() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(id);
+        stringBuilder.append(CSV_SEPARATOR);
+        stringBuilder.append(pesel);
         stringBuilder.append(CSV_SEPARATOR);
         stringBuilder.append(firstName);
         stringBuilder.append(CSV_SEPARATOR);
@@ -35,9 +41,25 @@ public class Customer {
         stringBuilder.append(CSV_SEPARATOR);
         stringBuilder.append(city);
         stringBuilder.append(CSV_SEPARATOR);
-        stringBuilder.append(date);
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_PATTERN);
+        String formattedDate = simpleDateFormat.format(date);
+        stringBuilder.append(formattedDate);
+
 
         return stringBuilder.toString();
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getPesel() {
@@ -63,11 +85,6 @@ public class Customer {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-
-    public int getId() {
-        return id;
-    }
-
 
     public String getCity() {
         return city;

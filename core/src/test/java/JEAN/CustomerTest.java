@@ -2,6 +2,9 @@ package JEAN;
 
 import org.junit.Test;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import static org.junit.Assert.*;
 
 /**
@@ -10,17 +13,17 @@ import static org.junit.Assert.*;
 public class CustomerTest {
     @Test
     public void toCSVString() throws Exception {
-        MovieRental movieRental = new MovieRental();
-        Customer customer = new Customer("123", "Adam", "Kowalski", "Wrocław", new Date());
+        // given
+        Customer customer = new Customer("123", "Adam", "Kowalski", "Wrocław", new Date(0));
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String expectedString = customer.getId() + ",123,Adam,Kowalski,Wrocław," + simpleDateFormat.format(new Date(0));
 
         // when
-        movieRental.toCSVString
+        String csvString = customer.toCSVString();
 
         // then
-        assertEquals(1, movieRental.getCustomers().size());
-        assertTrue(movieRental.getCustomers().contains(customer));
-
-
+        assertEquals(expectedString, csvString);
     }
 
 }
