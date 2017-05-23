@@ -3,6 +3,11 @@ package JEAN;
 import JEAN.exceptions.MovieAlreadyExistsException;
 import JEAN.exceptions.NullCustomerException;
 import JEAN.exceptions.NullMovieException;
+import JEAN.factory.CustomerFactory;
+import JEAN.factory.MovieFactory;
+import JEAN.factory.RentFactory;
+import JEAN.io.DataFileReader;
+import JEAN.io.DataFileWriter;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,11 +25,35 @@ public class MovieRental {
         this.rents = new ArrayList<>();
         this.movies = new ArrayList<>();
 
+        readDataFromFile();
+    }
+
+    private void readDataFromFile() {
+        DataFileReader<Customer> customerDataFileReader = new DataFileReader<>(new CustomerFactory());
+
         try {
-            this.customers = DataFileReader.readCustomersFromFile("customers.csv");
+            this.customers = customerDataFileReader.readFromFile("customers.csv");
         } catch (IOException e) {
             System.err.println("Błąd podczas wczytywania klientów z pliku");
             this.customers = new ArrayList<>();
+        }
+
+        DataFileReader<Movie> movieDataFileReader = new DataFileReader<>(new MovieFactory());
+
+        try {
+            this.movies = movieDataFileReader.readFromFile("movies.csv");
+        } catch (IOException e) {
+            System.err.println("Błąd podczas wczytywania filmów z pliku");
+            this.movies = new ArrayList<>();
+        }
+
+        DataFileReader<Rent> rentDataFileReader = new DataFileReader<>(new RentFactory());
+
+        try {
+            this.rents = rentDataFileReader.readFromFile("rents.csv");
+        } catch (IOException e) {
+            System.err.println("Błąd podczas wczytywania wypożyczeń z pliku");
+            this.rents = new ArrayList<>();
         }
     }
 
@@ -34,6 +63,7 @@ public class MovieRental {
         }
 
         customers.add(customer);
+        saveCustomersToFile();
     }
 
     public void addMovie(Movie movie) throws NullMovieException, MovieAlreadyExistsException {
@@ -41,16 +71,18 @@ public class MovieRental {
             throw new NullMovieException();
         }
 
-        if(movies.contains(movie)){
+        if (movies.contains(movie)) {
             throw new MovieAlreadyExistsException();
         }
 
         movies.add(movie);
+        saveMoviesToFile();
     }
 
-    public void addRent(Rent rent){
+    public void addRent(Rent rent) {
         // TODO handle errors
         rents.add(rent);
+        saveRentsToFile();
     }
 
     public List<Customer> getCustomers() {
@@ -65,7 +97,7 @@ public class MovieRental {
         return movies;
     }
 
-    public void printAllData(){
+    public void printAllData() {
         System.out.println("====== WYPOŻYCZALNIA =====");
         System.out.println("--- CUSTOMERS ---");
         for (Customer customer : customers) {
@@ -84,7 +116,15 @@ public class MovieRental {
         System.out.println("==========================");
     }
 
-    public void saveCustomersToFile(){
-        DataFileWriter.writeCustomersToFile("customers.csv", customers);
+    public void saveCustomersToFile() {
+        DataFileWriter.writeObjectToFile("customers.csv", customers);
+    }
+
+    public void saveMoviesToFile() {
+        DataFileWriter.writeObjectToFile("movies.csv", movies);
+    }
+
+    public void saveRentsToFile() {
+        DataFileWriter.writeObjectToFile("rents.csv", rents);
     }
 }
