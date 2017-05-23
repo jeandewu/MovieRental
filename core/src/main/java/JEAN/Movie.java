@@ -4,18 +4,28 @@ package JEAN;
  * Created by RENT on 2017-05-19.
  */
 public class Movie {
-    private static int nextId=0;
-    private  int id;
+    private static int nextId = 0;
+    private int id;
     private String title;
-    private String genere;
-    String description;
+    private String genre;
+    private String description;
 
-    public Movie(String title, String genere, String description) {
-        id=nextId;
+    public Movie(String title, String genre, String description) {
+        id = nextId;
         nextId++;
         this.title = title;
-        this.genere = genere;
+        this.genre = genre;
         this.description = description;
+    }
+
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", genre='" + genre + '\'' +
+                ", description='" + description + '\'' +
+                '}';
     }
 
     public int getId() {
@@ -30,12 +40,12 @@ public class Movie {
         this.title = title;
     }
 
-    public String getGenere() {
-        return genere;
+    public String getGenre() {
+        return genre;
     }
 
-    public void setGenere(String genere) {
-        this.genere = genere;
+    public void setGenre(String genre) {
+        this.genre = genre;
     }
 
     public String getDescription() {
